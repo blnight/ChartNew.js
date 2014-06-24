@@ -2756,15 +2756,17 @@ window.Chart = function (context) {
               if(config.xAxisBottom){
                 for (var i = 0; i < data.labels.length; i++) {
                   ctx.save();
-                  if (msr.rotateLabels > 0) {
-                    ctx.translate(yAxisPosX + i * valueHop - msr.highestXLabel/2, msr.xLabelPos);
-                    ctx.rotate(-(msr.rotateLabels * (Math.PI / 180)));
-                    ctx.fillTextMultiLine(fmtChartJS(config,data.labels[i],config.fmtXLabel), 0, 0,ctx.textBaseline,config.scaleFontSize);
+                  if(data.labels[i-1] && data.labels[i-1] !== data.labels[i]) {
+                    if (msr.rotateLabels > 0) {
+                      ctx.translate(yAxisPosX + i * valueHop - msr.highestXLabel/2, msr.xLabelPos);
+                      ctx.rotate(-(msr.rotateLabels * (Math.PI / 180)));
+                      ctx.fillTextMultiLine(fmtChartJS(config,data.labels[i],config.fmtXLabel), 0, 0,ctx.textBaseline,config.scaleFontSize);
+                    }
+                    else {
+                      ctx.fillTextMultiLine(fmtChartJS(config,data.labels[i],config.fmtXLabel), yAxisPosX + i * valueHop, msr.xLabelPos,ctx.textBaseline,config.scaleFontSize);
+                    }
                   }
-                  else {
-                    ctx.fillTextMultiLine(fmtChartJS(config,data.labels[i],config.fmtXLabel), yAxisPosX + i * valueHop, msr.xLabelPos,ctx.textBaseline,config.scaleFontSize);
-                  }
-                ctx.restore();
+                  ctx.restore();
                 }
               }
             }
